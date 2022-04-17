@@ -61,21 +61,52 @@ public class LinkedList {
     // bir metod tanimlayip PrintReverse metodu icinde tanimlamis oldugunuz bu metodu kullanabilirsiniz.
 
     public void PrintReverse(){
-        
+        System.out.print("|NULL|");
+        Node n = head;
+        RecursiveReverse(n);
+        System.out.print(" <-- | "+n.value+" |");
+    }
+    
+     public void RecursiveReverse(Node currNode){
+      if(currNode==null)return;
+      if(currNode.next==null){
+        this.head=currNode;
+        return;
+      }
+      RecursiveReverse(currNode.next);
+      System.out.print(" <-- | "+currNode.next.value+" |");
+      currNode.next=currNode;
     }
 
     // Bu metod bagli listedeki elemanlarin toplamini dondurur. 
     // Eger bagli liste bossa metod 0 degerini dondurmelidir. 
 
     public int Sum(){
+       int sum = 0;
+      Node n = head;
        
+      while (n != null) {
+        sum += n.value;
+        n = n.next;
+      }
+       return sum;
     }
 
     // IsSorted() bagli liste kucukten buyuge sirali ise true aksi durumda false dondurur.
     // Bagli liste bos ise veya tek elemanli ise IsSorted() true dondurur.
 
     public boolean IsSorted(){
-        
+        Node n = head;
+       Node t;
+      if (n == null)
+        return true;
+ 
+      for (t = head; t.next != null; t = t.next) {
+           if (t.value >= t.next.value){
+              return false;
+           }
+      }
+      return true;
     }
 
     // MergeSortedLists(LinkedList m, LinkedList n) parametre olarak iki tane kucukten
@@ -83,6 +114,47 @@ public class LinkedList {
     // siralandigi bir bagli liste dondurur.
 
     public static LinkedList MergeSortedLists(LinkedList m, LinkedList n){
+        Node headm=m.head;
+        Node headn=n.head;
+        LinkedList list=new LinkedList();
+        if(headm.value <= headn.value)
+        {
+            list.head =new Node(headm.value);
+            headm = headm.next;
+        }
+        else
+        {
+            list.head =new Node(headn.value);
+            headn = headn.next;
+        }
+        Node listNode=list.head;
+        while(true){
+        if (headm == null && headn==null) {
+          break;
+        }
         
+        if (headm == null){
+          listNode.next=headn;
+          headn = headn.next;
+          
+        }else if(headn == null){
+          listNode.next=headm;
+          headm = headm.next;
+        }
+        else if(headm.value <= headn.value)
+        {
+            listNode.next = headm;
+            headm = headm.next;
+        }
+        else
+        {
+            listNode.next = headn;
+            headn = headn.next;
+        }
+         
+        listNode = listNode.next;
+        }
+        
+        return list;
     }
 }
